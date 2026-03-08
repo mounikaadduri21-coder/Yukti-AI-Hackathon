@@ -1,175 +1,296 @@
-# Requirements Document: Yukti AI
+# Requirements Document: Yukti AI - Enterprise E-Commerce Aggregator & Scam Detection Platform
 
 ## Introduction
 
-Yukti AI is a Streamlit-based e-commerce intelligence platform designed to empower consumers with data-driven insights for making informed purchasing decisions. The platform provides three core analytical tools: The Seller Matrix for cross-platform seller comparison, Satya-View for visual product authenticity verification, and True-Cost Calculator for total cost of ownership analysis. The system aims to reduce consumer risk by aggregating trust signals, detecting counterfeit products, and revealing hidden long-term costs.
+Yukti AI is an advanced enterprise-grade e-commerce aggregator and scam-detection application built with Python and Streamlit. The platform simulates a complete AWS cloud architecture using seeded/cached dictionary data to provide seamless product comparison, visual authenticity verification, and hidden cost analysis across multiple e-commerce platforms. The system aims to protect consumers from counterfeit products and financial traps while demonstrating cloud-native architecture patterns.
+
+**Tagline**: "See the Real, Know the Worth"
 
 ## Glossary
 
-- **Yukti_AI_Platform**: The complete Streamlit-based web application
-- **Seller_Matrix**: The cross-platform seller aggregation and visualization module
-- **Satya_View**: The image-based product authenticity verification module
-- **True_Cost_Calculator**: The total cost of ownership calculation module
-- **Trust_Score**: A normalized metric (0.0-5.0) derived from verified customer reviews
-- **SKU**: Stock Keeping Unit - a unique product identifier
-- **Golden_Source**: Official brand-provided reference image for authenticity comparison
-- **Feature_Match_Score**: Percentage similarity between user-uploaded image and Golden Source
-- **TCO**: Total Cost of Ownership over a specified time period
-- **Yukti_Score**: An aggregated metric (0-100) representing overall purchase recommendation confidence
-- **Organic_Seller**: A seller whose listing is not marked as "Sponsored" or paid advertisement
-- **Usage_Profile**: User-defined consumption pattern (Heavy/Medium/Light)
+- **Yukti_AI**: The complete Streamlit-based enterprise application
+- **Search_Bar**: Universal input interface accepting product names, URLs, or images
+- **Seller_Matrix**: Cross-platform seller aggregation displaying top picks and verified sellers
+- **Satya_View**: AWS Rekognition-powered visual authenticity scanner
+- **True_Cost_Calculator**: AWS Bedrock-powered financial trap detector
+- **Top_Pick**: Seller with highest available rating on each platform (tie-breaker: lowest price, fastest delivery)
+- **Scam_Target**: Artificially injected low-rated, suspiciously priced seller for demonstration
+- **Match_Percentage**: Visual similarity score (0-100%) between product images
+- **Signal_Status**: Traffic light indicator (Green/Yellow/Red) for authenticity
+- **AWS_Lambda**: Simulated serverless triggers for scan operations
+- **AWS_S3**: Simulated image storage and data caching layer
+- **AWS_Rekognition**: Visual scanner for detecting physical product flaws
+- **AWS_Bedrock**: GenAI engine for sentiment analysis and cost calculations
+- **MVP_Products**: 12 seeded products across 6 categories for demo validation
 
 ## Requirements
 
-### Requirement 1: Platform Navigation and Structure
+### Requirement 1: Platform Configuration and Branding
 
-**User Story:** As a user, I want to navigate between different analytical tools seamlessly, so that I can access all features from a unified interface.
-
-#### Acceptance Criteria
-
-1. WHEN the application starts, THE Yukti_AI_Platform SHALL display a navigation menu with three options: Seller Matrix, Satya-View, and True-Cost Calculator
-2. WHEN a user selects a navigation option, THE Yukti_AI_Platform SHALL load the corresponding feature page without page refresh
-3. THE Yukti_AI_Platform SHALL maintain consistent branding with Trust Blue (#0056D2) theme across all pages
-4. THE Yukti_AI_Platform SHALL persist user session data across page navigation using session state management
-5. WHEN the application loads, THE Yukti_AI_Platform SHALL display the Yukti AI logo and tagline on all pages
-
-### Requirement 2: Seller Matrix - Data Aggregation
-
-**User Story:** As a consumer, I want to see all sellers offering a specific product across multiple platforms, so that I can compare options comprehensively.
+**User Story:** As a user, I want to see consistent enterprise branding and cloud architecture indicators, so that I understand the platform's capabilities.
 
 #### Acceptance Criteria
 
-1. WHEN a user enters a SKU identifier, THE Seller_Matrix SHALL retrieve seller data from multiple e-commerce platforms (universal support for any platform, not limited to specific ones)
-2. THE Seller_Matrix SHALL filter out all sellers marked as "Sponsored" from the aggregated results
-3. WHEN aggregating seller data, THE Seller_Matrix SHALL extract seller name, price, trust score, platform source, and product_url for each organic seller
-4. THE Seller_Matrix SHALL normalize trust scores from different platforms to a uniform 0.0-5.0 scale based on verified reviews, with fallback support for unknown platforms
-5. IF a platform is unavailable or returns an error, THEN THE Seller_Matrix SHALL continue processing remaining platforms and log the failure
-6. THE Seller_Matrix SHALL include product_url field in seller data to enable direct "Buy Now" functionality
+1. WHEN the application loads, THE Yukti_AI SHALL display the tagline "See the Real, Know the Worth" prominently in the header
+2. THE Yukti_AI SHALL use Trust Blue (#0056D2) as the primary theme color across all pages
+3. THE Yukti_AI SHALL configure AWS credentials using os.environ['AWS_ACCESS_KEY_ID'] to demonstrate enterprise security practices
+4. THE Yukti_AI SHALL display cloud architecture indicators (S3 caching, Lambda triggers, Rekognition, Bedrock) in the UI
+5. THE Yukti_AI SHALL maintain a wide layout optimized for data visualization
 
-### Requirement 3: Seller Matrix - Visualization
+### Requirement 2: MVP Product Validation
 
-**User Story:** As a consumer, I want to visualize seller options on a scatter plot, so that I can quickly identify the best combination of trust and price.
-
-#### Acceptance Criteria
-
-1. THE Seller_Matrix SHALL display organic sellers on a 2D scatter plot with Trust Score on X-axis (0.0-5.0) and Price on Y-axis (INR)
-2. WHEN rendering the scatter plot, THE Seller_Matrix SHALL color-code data points using a gradient from green (high trust, low price) to red (low trust, high price)
-3. WHEN a user hovers over a data point, THE Seller_Matrix SHALL display a tooltip showing seller name, exact trust score, price, and platform
-4. THE Seller_Matrix SHALL make the scatter plot interactive with zoom and pan capabilities, and clickable nodes that open product_url in new tab
-5. WHEN no organic sellers are found, THE Seller_Matrix SHALL display a message indicating no results and suggest alternative search terms
-6. THE Seller_Matrix SHALL display product_url in the seller details table for direct access
-
-### Requirement 4: Satya-View - Image Upload and Processing
-
-**User Story:** As a consumer, I want to upload a product photo for authenticity verification, so that I can avoid purchasing counterfeit items.
+**User Story:** As a demo user, I want to be guided to valid products, so that I experience zero-lag performance.
 
 #### Acceptance Criteria
 
-1. THE Satya_View SHALL provide a file upload interface accepting image formats: JPG, JPEG, PNG
-2. WHEN a user uploads an image, THE Satya_View SHALL validate the file format and size (maximum 10MB)
-3. IF an invalid file is uploaded, THEN THE Satya_View SHALL display an error message and prevent processing
-4. WHEN a valid image is uploaded, THE Satya_View SHALL display a preview of the uploaded image
-5. THE Satya_View SHALL store the uploaded image in session state for comparison processing
+1. THE Yukti_AI SHALL maintain a seeded database of exactly 12 products across 6 categories:
+   - Electronics: boAt Earbuds, Titan Smartwatch
+   - Fashion: Uppada Saree, Manyavar Dhotis, Unbranded Sling Bag
+   - Home: Kent RO, Hawkins Cooker
+   - Health: Lifelong Spin Bike
+   - Office: Zebronics Keyboard, Milton Lunch Box
+   - Beauty: Lakmé Kajal, Mamaearth Oil
+2. WHEN a user searches for a product NOT in the seeded list, THE Yukti_AI SHALL display this exact message: "⚠️ Welcome to Yukti AI Hackathon Demo! To ensure zero-lag performance, this MVP is currently seeded with 12 products across 6 categories. Try searching: 'boAt Earbuds' or 'Unbranded Sling Bag'"
+3. THE Yukti_AI SHALL stop execution and prevent further processing for invalid products
+4. THE Yukti_AI SHALL perform case-insensitive fuzzy matching for product name searches
+5. THE Yukti_AI SHALL validate product names before routing to any feature
 
-### Requirement 5: Satya-View - Authenticity Detection
+### Requirement 3: Search Bar Logic (Phase 1 - Input Routing)
 
-**User Story:** As a consumer, I want to compare my product photo against official brand images, so that I can determine if the product is authentic.
-
-#### Acceptance Criteria
-
-1. WHEN an image is submitted for analysis, THE Satya_View SHALL compare it against the Golden_Source image using computer vision feature matching
-2. THE Satya_View SHALL calculate a Feature_Match_Score as a percentage (0-100%) representing visual similarity
-3. WHEN the Feature_Match_Score is greater than 90%, THE Satya_View SHALL display a green indicator with "Authentic" label
-4. WHEN the Feature_Match_Score is less than 50%, THE Satya_View SHALL display a red indicator with "Potential Fake" warning
-5. WHEN the Feature_Match_Score is between 50% and 90%, THE Satya_View SHALL display a yellow indicator with "Uncertain - Manual Review Recommended" message
-6. THE Satya_View SHALL display the exact Feature_Match_Score percentage alongside the traffic light indicator
-7. THE Satya_View SHALL show a side-by-side comparison of the uploaded image and Golden_Source image
-8. THE Satya_View SHALL use MockProductDatabase component to retrieve Golden Source images with safe placeholder fallback to prevent crashes when images are not found
-
-### Requirement 6: True-Cost Calculator - Input Collection
-
-**User Story:** As a consumer, I want to input product details and my usage pattern, so that I can calculate the total cost of ownership.
+**User Story:** As a user, I want to input products in multiple formats, so that I can access features flexibly.
 
 #### Acceptance Criteria
 
-1. THE True_Cost_Calculator SHALL provide input fields for product name, sticker price (INR), and product category
-2. THE True_Cost_Calculator SHALL provide a selection interface for Usage_Profile with three options: Heavy, Medium, Light
-3. WHEN a user selects a Usage_Profile, THE True_Cost_Calculator SHALL display a description of what each profile means
-4. THE True_Cost_Calculator SHALL validate that sticker price is a positive number
-5. IF invalid input is provided, THEN THE True_Cost_Calculator SHALL display field-specific error messages and prevent calculation
+1. THE Search_Bar SHALL accept three input types: Product Name, Product URL, or Uploaded Image
+2. WHEN input is a Product Name, THE Search_Bar SHALL route through simulated Lambda, validate against MVP products, and open Seller Matrix
+3. WHEN input is an Uploaded Image, THE Search_Bar SHALL use simulated Rekognition to extract product text, validate against MVP products, and open Seller Matrix
+4. WHEN input is a Product URL (contains "http" or "www"), THE Search_Bar SHALL skip Seller Matrix and trigger Lambda to open Satya View directly
+5. WHEN input is a Seller Store URL (e.g., "amazon.in/stores/"), THE Search_Bar SHALL display error: "⚠️ Yukti AI compares Original vs. Fake for specific products. Please enter a Product Name, URL, or upload an image."
+6. THE Search_Bar SHALL display a file uploader widget for image inputs accepting JPG, JPEG, PNG formats
+7. THE Search_Bar SHALL simulate Lambda trigger with 0.5-1.0 second delay and display "🔄 Lambda Processing..." indicator
 
-### Requirement 7: True-Cost Calculator - TCO Computation
+### Requirement 4: Seller Matrix - Data Aggregation (Phase 2)
 
-**User Story:** As a consumer, I want to see the total cost of ownership over 3 years, so that I can understand hidden costs beyond the sticker price.
-
-#### Acceptance Criteria
-
-1. WHEN a user submits valid inputs, THE True_Cost_Calculator SHALL calculate TCO over a 3-year period
-2. THE True_Cost_Calculator SHALL include power consumption costs based on product category and Usage_Profile
-3. THE True_Cost_Calculator SHALL include consumable costs (filters, cartridges, etc.) based on product category and Usage_Profile
-4. THE True_Cost_Calculator SHALL include maintenance costs based on product category and Usage_Profile
-5. THE True_Cost_Calculator SHALL display a breakdown table showing: Sticker Price, Year 1 Costs, Year 2 Costs, Year 3 Costs, and Total 3-Year Cost
-6. THE True_Cost_Calculator SHALL calculate and display the effective monthly cost (Total TCO / 36 months)
-7. WHERE multiple product options are compared, THE True_Cost_Calculator SHALL display a comparative table highlighting the lowest TCO option
-8. THE True_Cost_Calculator SHALL use "Generic" fallback category for unknown product types to prevent crashes
-
-### Requirement 8: Yukti Score Calculation
-
-**User Story:** As a consumer, I want to see an overall recommendation score, so that I can quickly assess purchase confidence.
+**User Story:** As a consumer, I want to see top sellers across platforms, so that I can compare verified options.
 
 #### Acceptance Criteria
 
-1. WHERE Seller_Matrix data is available, THE Yukti_AI_Platform SHALL calculate a Yukti_Score (0-100) based on trust score and price competitiveness
-2. WHERE Satya_View analysis is available, THE Yukti_AI_Platform SHALL incorporate Feature_Match_Score into the Yukti_Score calculation
-3. WHERE True_Cost_Calculator data is available, THE Yukti_AI_Platform SHALL incorporate TCO competitiveness into the Yukti_Score calculation
-4. THE Yukti_AI_Platform SHALL display the Yukti_Score with color coding: Green (80-100), Yellow (50-79), Red (0-49)
-5. THE Yukti_AI_Platform SHALL animate the Yukti_Score display with a progress bar or gauge visualization
-6. WHEN insufficient data is available, THE Yukti_AI_Platform SHALL display "Insufficient Data" instead of a score
+1. THE Seller_Matrix SHALL aggregate seller data from exactly 6 platforms: Amazon, Flipkart, Myntra, Meesho, Croma, and JioMart
+2. THE Seller_Matrix SHALL display UI title as "Top Platforms" without mentioning specific platform count
+3. THE Seller_Matrix SHALL generate dynamic seller data with variable prices and ratings (no hardcoded values)
+4. THE Seller_Matrix SHALL simulate S3 caching with indicator showing "-40% AI retrieval cost reduction"
+5. WHEN aggregating data, THE Seller_Matrix SHALL extract: seller_name, platform, price (INR), rating (0.0-5.0), delivery_days, product_url for each seller
+6. THE Seller_Matrix SHALL use realistic Indian pricing ranges based on product category
+7. THE Seller_Matrix SHALL generate 3-5 sellers per platform with varied ratings
 
-### Requirement 9: Mock AWS Service Integration
+### Requirement 5: Seller Matrix - Top Picks and Seller List (Phase 2)
 
-**User Story:** As a developer, I want to use mocked AWS services for the prototype, so that I can demonstrate functionality without incurring cloud costs.
-
-#### Acceptance Criteria
-
-1. THE Yukti_AI_Platform SHALL use a mock implementation of AWS Rekognition for image comparison in Satya_View
-2. THE mock AWS Rekognition service SHALL return realistic Feature_Match_Score values based on simple image similarity algorithms
-3. WHERE AWS Bedrock integration is planned, THE Yukti_AI_Platform SHALL use a mock implementation returning predefined responses
-4. THE mock services SHALL simulate realistic response times (0.5-2 seconds) to mimic actual API behavior
-5. THE Yukti_AI_Platform SHALL include configuration flags to switch between mock and real AWS services
-
-### Requirement 10: Data Persistence and State Management
-
-**User Story:** As a user, I want my inputs and results to persist during my session, so that I can navigate between features without losing data.
+**User Story:** As a consumer, I want to see the best seller from each platform first, so that I can quickly identify trusted options.
 
 #### Acceptance Criteria
 
-1. THE Yukti_AI_Platform SHALL store all user inputs in session state when navigating between pages
-2. WHEN a user returns to a previously visited page, THE Yukti_AI_Platform SHALL restore the previous state including inputs and results
-3. THE Yukti_AI_Platform SHALL clear session state when the user explicitly requests a reset or closes the browser
-4. THE Yukti_AI_Platform SHALL handle session state initialization gracefully when keys are not yet defined
-5. THE Yukti_AI_Platform SHALL persist uploaded images in session state without exceeding memory limits
+1. THE Seller_Matrix SHALL identify exactly 1 Top Pick per platform with the absolute Highest Available Rating
+2. WHEN multiple sellers have the same highest rating, THE Seller_Matrix SHALL apply tie-breaker: lowest price, then fastest delivery
+3. THE Seller_Matrix SHALL display Top Picks in a prominent "Green Top Pick" section with green highlighting
+4. THE Seller_Matrix SHALL display remaining sellers in a scrollable list below Top Picks
+5. THE Seller_Matrix SHALL ONLY include sellers in the remaining list who hold the exact same Highest Available Rating as their platform's Top Pick
+6. THE Seller_Matrix SHALL hide all lower-rated sellers from the display
+7. THE Seller_Matrix SHALL artificially inject exactly 1 low-rated (1.5-2.5 stars), suspiciously priced seller at the bottom as "Scam Target"
+8. THE Seller_Matrix SHALL label the Scam Target with a red warning badge: "⚠️ Suspicious Listing"
+9. THE Seller_Matrix SHALL place a [🔍 Run Satya View] button next to every seller in the list
 
-### Requirement 11: Error Handling and User Feedback
+### Requirement 6: Seller Matrix - Buy Box UI (Phase 2)
 
-**User Story:** As a user, I want clear error messages and feedback, so that I understand what went wrong and how to fix it.
-
-#### Acceptance Criteria
-
-1. WHEN an error occurs during data fetching, THE Yukti_AI_Platform SHALL display a user-friendly error message explaining the issue
-2. WHEN processing is in progress, THE Yukti_AI_Platform SHALL display a loading indicator or progress message
-3. IF a required field is empty, THEN THE Yukti_AI_Platform SHALL highlight the field and display a validation message
-4. WHEN an operation completes successfully, THE Yukti_AI_Platform SHALL display a success confirmation message
-5. THE Yukti_AI_Platform SHALL log technical errors to console while showing simplified messages to users
-
-### Requirement 12: Responsive Design and Accessibility
-
-**User Story:** As a user, I want the platform to work well on different screen sizes, so that I can use it on various devices.
+**User Story:** As a consumer, I want a clean comparison interface, so that I can make quick decisions.
 
 #### Acceptance Criteria
 
-1. THE Yukti_AI_Platform SHALL render correctly on desktop screens (1920x1080 and above)
-2. THE Yukti_AI_Platform SHALL render correctly on tablet screens (768x1024)
-3. THE Yukti_AI_Platform SHALL adjust layout and font sizes appropriately for different screen widths
-4. THE Yukti_AI_Platform SHALL ensure interactive elements (buttons, inputs) are touch-friendly with minimum 44x44px target size
-5. THE Yukti_AI_Platform SHALL maintain readability with sufficient color contrast ratios for text and backgrounds
+1. THE Seller_Matrix SHALL generate a clean "Buy Box" UI for each seller showing: Platform Logo, Seller Name, Price (₹), Rating (stars), Delivery Time, [Buy Now] button, [🔍 Run Satya View] button
+2. THE Seller_Matrix SHALL display Top Picks in a grid layout (2-3 columns)
+3. THE Seller_Matrix SHALL display remaining sellers in a single-column scrollable list
+4. THE Seller_Matrix SHALL use platform-specific color coding (Amazon: orange, Flipkart: blue, Myntra: pink, Nykaa: purple, Croma: green, JioMart: red)
+5. THE Seller_Matrix SHALL display "Simulated S3 Cache: -40% Cost" indicator at the top
+6. THE Seller_Matrix SHALL show total seller count: "Showing X verified sellers across top platforms"
+
+### Requirement 7: Satya View - Trigger and Layout (Phase 3)
+
+**User Story:** As a consumer, I want to verify product authenticity visually, so that I can avoid counterfeits.
+
+#### Acceptance Criteria
+
+1. THE Satya_View SHALL trigger when user clicks [🔍 Run Satya View] button or enters a Product URL
+2. THE Satya_View SHALL simulate Lambda trigger with "🔄 Lambda: Rekognition Scan Initiated..." message
+3. THE Satya_View SHALL display a 3-Image Truth Table layout: [Original Brand] | [Seller Upload] | [Customer Received]
+4. WHEN user uploaded an image directly (no seller selected), THE Satya_View SHALL display 2-Image table: [Original Brand] | [User Upload]
+5. THE Satya_View SHALL pull images from simulated S3 storage with "📦 S3: Loading product images..." indicator
+6. THE Satya_View SHALL display image labels clearly above each image
+7. THE Satya_View SHALL ensure all images are same size and aligned horizontally
+
+### Requirement 8: Satya View - Visual Scan (AWS Rekognition) (Phase 3)
+
+**User Story:** As a consumer, I want to see specific product flaws highlighted, so that I understand authenticity issues.
+
+#### Acceptance Criteria
+
+1. THE Satya_View SHALL simulate AWS Rekognition visual analysis with 1.0-2.0 second processing delay
+2. THE Satya_View SHALL add red circles/highlights on images pointing to specific physical flaws (missing seals, wrong fonts, color mismatches)
+3. THE Satya_View SHALL display a list of detected flaws below images: "🔴 Missing hologram seal", "🔴 Font mismatch on logo", "🔴 Color variation detected"
+4. THE Satya_View SHALL generate 0-3 random flaws for fake products, 0 flaws for authentic products
+5. THE Satya_View SHALL display "✅ No physical flaws detected" for authentic products
+6. THE Satya_View SHALL show "AWS Rekognition: Visual Analysis Complete" indicator
+
+### Requirement 9: Satya View - NLP Review Scan (AWS Bedrock) (Phase 3)
+
+**User Story:** As a consumer, I want to see customer sentiment analysis, so that I can understand real experiences.
+
+#### Acceptance Criteria
+
+1. THE Satya_View SHALL simulate AWS Bedrock NLP processing with 1.0-1.5 second delay
+2. THE Satya_View SHALL display a Sentiment Bar Chart with three categories: Positive (green), Neutral (yellow), Negative (red)
+3. THE Satya_View SHALL generate realistic sentiment percentages totaling 100%
+4. THE Satya_View SHALL display a 1-line critical alert summary: "⚠️ 45% of reviews mention 'fake product' or 'not original'"
+5. THE Satya_View SHALL show "AWS Bedrock: Sentiment Analysis Complete" indicator
+6. THE Satya_View SHALL display review count: "Analyzed 1,247 customer reviews"
+
+### Requirement 10: Satya View - Match Percentage & Signals (Branded Items) (Phase 3)
+
+**User Story:** As a consumer, I want a clear authenticity verdict, so that I can make safe purchases.
+
+#### Acceptance Criteria
+
+1. THE Satya_View SHALL calculate Match_Percentage (0-100%) comparing Seller Upload vs Original Brand
+2. WHEN Match_Percentage is 100%, THE Satya_View SHALL display 🟢 Green Signal with "Verified Safe"
+3. WHEN Match_Percentage is 60.0% to 99.9%, THE Satya_View SHALL display 🟡 Yellow Signal with "Honest seller, but likely a replica/old packaging"
+4. WHEN Match_Percentage is 0.0% to 59.9%, THE Satya_View SHALL display 🔴 Red Signal with "Scam/Bait & Switch"
+5. THE Satya_View SHALL display the exact Match_Percentage prominently: "Match: 87.5%"
+6. THE Satya_View SHALL use large, bold signal indicators (emoji + text)
+
+### Requirement 11: Satya View - Match Logic (Unbranded/Generic Items) (Phase 3)
+
+**User Story:** As a consumer buying generic items, I want honest seller verification, so that I receive what's advertised.
+
+#### Acceptance Criteria
+
+1. WHEN product is unbranded/generic (e.g., Unbranded Sling Bag), THE Satya_View SHALL compare Seller Upload vs Customer Received (ignore Original Brand)
+2. WHEN images match, THE Satya_View SHALL display 🟢 Green Signal with warning tag: "⚠️ Generic / Unbranded Item"
+3. WHEN images don't match, THE Satya_View SHALL display 🔴 Red Signal with "Seller misrepresentation detected"
+4. THE Satya_View SHALL display "Generic Product Mode" indicator at the top
+5. THE Satya_View SHALL show 2-image comparison layout for unbranded items
+
+### Requirement 12: True Cost Calculator - Trigger and Scenarios (Phase 4)
+
+**User Story:** As a consumer, I want to understand hidden costs, so that I avoid financial traps.
+
+#### Acceptance Criteria
+
+1. THE True_Cost_Calculator SHALL trigger from Satya View results or direct navigation
+2. THE True_Cost_Calculator SHALL simulate AWS Bedrock financial analysis with "🔄 Bedrock: Calculating True Cost..." indicator
+3. THE True_Cost_Calculator SHALL determine scenario based on product type and signal status
+4. THE True_Cost_Calculator SHALL ignore standard delivery fees in all calculations
+5. THE True_Cost_Calculator SHALL display scenario type prominently at the top
+
+### Requirement 13: True Cost Calculator - Scenario A (Dare to Buy Trap) (Phase 4)
+
+**User Story:** As a consumer considering a fake product, I want to see long-term costs, so that I understand the true expense.
+
+#### Acceptance Criteria
+
+1. WHEN Satya_View shows Red Signal, THE True_Cost_Calculator SHALL activate Scenario A: "The Dare to Buy Trap"
+2. THE True_Cost_Calculator SHALL calculate Lifespan Cost comparing fake vs original over 12 months
+3. THE True_Cost_Calculator SHALL include replacement costs (fake breaks in 2-3 months, original lasts 12+ months)
+4. THE True_Cost_Calculator SHALL display monthly cost comparison: "Fake: ₹450/month vs Original: ₹250/month"
+5. THE True_Cost_Calculator SHALL show total 1-year cost with red highlighting for fake product
+6. THE True_Cost_Calculator SHALL display warning: "🔴 Cheap fakes cost MORE per month than originals"
+
+### Requirement 14: True Cost Calculator - Scenario B (Maintenance Trap) (Phase 4)
+
+**User Story:** As a consumer buying hardware/appliances, I want to see recurring costs, so that I budget accurately.
+
+#### Acceptance Criteria
+
+1. WHEN product category is Home or Office (Kent RO, Hawkins Cooker, etc.), THE True_Cost_Calculator SHALL activate Scenario B: "The Maintenance Trap"
+2. THE True_Cost_Calculator SHALL calculate 1-Year Total Cost: base price + mandatory recurring costs
+3. THE True_Cost_Calculator SHALL include category-specific costs: water filters (₹4000/year), ink refills (₹3000/year), etc.
+4. THE True_Cost_Calculator SHALL display breakdown table: Base Price, Filter Costs, Maintenance, Total 1-Year Cost
+5. THE True_Cost_Calculator SHALL show monthly equivalent: "Effective Monthly Cost: ₹1,250"
+6. THE True_Cost_Calculator SHALL highlight recurring costs in orange
+
+### Requirement 15: True Cost Calculator - Scenario C (Discount Explainer) (Phase 4)
+
+**User Story:** As a consumer seeing discounts, I want to understand if they're legitimate, so that I avoid clearance traps.
+
+#### Acceptance Criteria
+
+1. WHEN product is branded with Green/Yellow signal, THE True_Cost_Calculator SHALL activate Scenario C: "The Discount Explainer"
+2. THE True_Cost_Calculator SHALL analyze discount legitimacy based on season, brand, and price drop percentage
+3. WHEN discount is legitimate (10-30%, festive season), THE True_Cost_Calculator SHALL display 🟢 "Authorized Festive Sale"
+4. WHEN discount is suspicious (>50%, near expiry), THE True_Cost_Calculator SHALL display 🔴 "Clearance Trap: Product expires soon"
+5. THE True_Cost_Calculator SHALL show expiry date estimate for clearance items
+6. THE True_Cost_Calculator SHALL display savings calculation for legitimate sales
+
+### Requirement 16: True Cost Calculator - Scenario D (Unbranded Reality Check) (Phase 4)
+
+**User Story:** As a consumer buying generic items, I want to know if the price is fair, so that I get good value.
+
+#### Acceptance Criteria
+
+1. WHEN product is unbranded/generic, THE True_Cost_Calculator SHALL activate Scenario D: "Unbranded Reality Check"
+2. THE True_Cost_Calculator SHALL compare price against market average for similar generic items
+3. WHEN price is below or at market average, THE True_Cost_Calculator SHALL display 🟢 "Honest Budget Buy! Great daily value."
+4. WHEN price is above market average (>20% higher), THE True_Cost_Calculator SHALL display 🔴 "Overpriced Alert. Priced above market average."
+5. THE True_Cost_Calculator SHALL show market comparison: "This item: ₹299 | Market avg: ₹250"
+6. THE True_Cost_Calculator SHALL display value rating: "Value Score: 7/10"
+
+### Requirement 17: AWS Architecture Simulation
+
+**User Story:** As a developer, I want to demonstrate cloud-native patterns, so that I showcase enterprise architecture.
+
+#### Acceptance Criteria
+
+1. THE Yukti_AI SHALL simulate AWS Lambda with $0 idle-cost indicators and trigger animations
+2. THE Yukti_AI SHALL simulate AWS S3 with caching indicators showing "-40% retrieval cost"
+3. THE Yukti_AI SHALL simulate AWS Rekognition with processing delays (1.0-2.0 seconds) and completion messages
+4. THE Yukti_AI SHALL simulate AWS Bedrock with NLP processing delays (1.0-1.5 seconds) and completion messages
+5. THE Yukti_AI SHALL use os.environ for AWS credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION)
+6. THE Yukti_AI SHALL display architecture diagram or indicators showing service interactions
+7. THE Yukti_AI SHALL log simulated API calls to console for demonstration purposes
+
+### Requirement 18: Data Generation and Realism
+
+**User Story:** As a demo user, I want realistic data, so that the platform feels production-ready.
+
+#### Acceptance Criteria
+
+1. THE Yukti_AI SHALL generate dynamic prices using realistic ranges per category (Electronics: ₹500-5000, Fashion: ₹300-3000, etc.)
+2. THE Yukti_AI SHALL generate dynamic ratings using weighted distribution (70% high ratings 4.0-5.0, 20% medium 3.0-3.9, 10% low 1.5-2.9)
+3. THE Yukti_AI SHALL generate realistic seller names per platform (Amazon: "TechStore Official", Flipkart: "ElectroHub", etc.)
+4. THE Yukti_AI SHALL generate realistic delivery times (1-7 days) based on platform and product
+5. THE Yukti_AI SHALL use Indian Rupee (₹) symbol consistently across all price displays
+6. THE Yukti_AI SHALL generate realistic review counts (100-5000) per seller
+7. THE Yukti_AI SHALL ensure no hardcoded prices or ratings in the codebase
+
+### Requirement 19: Error Handling and User Guidance
+
+**User Story:** As a user, I want clear guidance when I make mistakes, so that I can use the platform effectively.
+
+#### Acceptance Criteria
+
+1. WHEN user enters invalid product, THE Yukti_AI SHALL display MVP demo notice with example products
+2. WHEN user enters seller store URL, THE Yukti_AI SHALL display specific error message guiding to correct input
+3. WHEN image upload fails, THE Yukti_AI SHALL display error: "Unable to process image. Please upload JPG, JPEG, or PNG under 10MB"
+4. WHEN network simulation fails, THE Yukti_AI SHALL display: "AWS service temporarily unavailable. Please try again."
+5. THE Yukti_AI SHALL log all errors to console for debugging
+6. THE Yukti_AI SHALL never display raw Python exceptions to users
+
+### Requirement 20: Navigation and User Flow
+
+**User Story:** As a user, I want smooth navigation between features, so that I can explore all capabilities.
+
+#### Acceptance Criteria
+
+1. THE Yukti_AI SHALL provide sidebar navigation with three pages: Home (Search), Seller Matrix, Satya View, True Cost
+2. THE Yukti_AI SHALL maintain session state across page navigation
+3. THE Yukti_AI SHALL display breadcrumb trail showing current location
+4. THE Yukti_AI SHALL provide "Back to Search" button on all feature pages
+5. THE Yukti_AI SHALL preserve search results when navigating between Seller Matrix, Satya View, and True Cost
+6. THE Yukti_AI SHALL display progress indicators during page transitions
