@@ -33,7 +33,7 @@ def get_safe_product_image(product_name: str, image_type: str = "upload") -> str
     file_name = 'boAt' if product_name == 'boAt Earbuds' else product_name
     
     # Construct DYNAMIC local path using pure f-string with file_name
-    local_path = f"images/{image_type}_{file_name}.jpg"
+    local_path = f"{image_type}_{file_name}.jpg"
     
     # Check if local file exists
     if os.path.exists(local_path):
@@ -359,4 +359,5 @@ def render_seller_matrix_page() -> None:
 # Main execution
 if __name__ == "__main__":
     render_seller_matrix_page()
+
 
