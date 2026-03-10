@@ -120,11 +120,11 @@ def display_top_picks_grid(top_picks: List[Dict]) -> None:
     
     # Sling Bag Fix - Use upload image for Sling Bag
     if 'Sling Bag' in product_name:
-        thumbnail_path = 'images/upload_Sling Bag.jpg'
+        thumbnail_path = 'upload_Sling Bag.jpg'
     else:
         # Rule 1: The boAt Fix - clean the name before building paths
         file_name = 'boAt' if product_name == 'boAt Earbuds' else product_name
-        thumbnail_path = f"images/upload_{file_name}.jpg"
+        thumbnail_path = f"upload_{file_name}.jpg"
     
     # Display in 3 columns
     cols = st.columns(3)
@@ -359,3 +359,4 @@ def render_seller_matrix_page() -> None:
 # Main execution
 if __name__ == "__main__":
     render_seller_matrix_page()
+
