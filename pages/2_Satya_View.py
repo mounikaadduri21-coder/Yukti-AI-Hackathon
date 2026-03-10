@@ -204,11 +204,11 @@ def display_image_truth_table(images: dict, is_generic: bool, product_name: str)
         
         with col1:
             st.markdown("#### 📤 Seller Upload")
-            st.image('images/upload_Sling Bag.jpg', use_container_width=True, caption="Image uploaded by seller")
+            st.image('upload_Sling Bag.jpg', use_container_width=True, caption="Image uploaded by seller")
         
         with col2:
             st.markdown("#### 📦 Customer Received")
-            st.image('images/received_Sling Bag.jpg', use_container_width=True, caption="Actual product received")
+            st.image('received_Sling Bag.jpg', use_container_width=True, caption="Actual product received")
     else:
         # THREE COLUMNS for all other 11 products
         col1, col2, col3 = st.columns(3)
@@ -577,4 +577,5 @@ def render_satya_view_page() -> None:
 # Main execution
 if __name__ == "__main__":
     render_satya_view_page()
+
 
