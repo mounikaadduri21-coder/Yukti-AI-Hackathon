@@ -1,5 +1,7 @@
 streamlit
 pandas
 Pillow
+plotly
 boto3
 python-dotenv
+
