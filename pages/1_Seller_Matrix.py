@@ -227,13 +227,13 @@ def render_seller_matrix_page() -> None:
     # Sling Bag Fix - Use upload image for Sling Bag
     if 'Sling Bag' in selected_product:
         # Sling Bag has no brand image, use upload
-        main_image_path = 'images/upload_Sling Bag.jpg'
+        main_image_path = 'upload_Sling Bag.jpg'
     else:
         # Rule 1: The boAt Fix - clean the name before building paths
         file_name = 'boAt' if selected_product == 'boAt Earbuds' else selected_product
         
         # All other products use brand image
-        main_image_path = f'images/brand_{file_name}.jpg'
+        main_image_path = f'brand_{file_name}.jpg'
     
     # Check if file exists on hard drive
     if not os.path.exists(main_image_path):
@@ -359,6 +359,7 @@ def render_seller_matrix_page() -> None:
 # Main execution
 if __name__ == "__main__":
     render_seller_matrix_page()
+
 
 
 
