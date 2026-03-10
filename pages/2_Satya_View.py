@@ -146,9 +146,9 @@ def load_images_from_s3(product_name: str, seller_data: dict, is_generic: bool) 
     file_name = 'boAt' if product_name == 'boAt Earbuds' else product_name
     
     # Build paths DYNAMICALLY using pure f-strings with file_name
-    brand_path = f"images/brand_{file_name}.jpg"
-    upload_path = f"images/upload_{file_name}.jpg"
-    received_path = f"images/received_{file_name}.jpg"
+    brand_path = f"brand_{file_name}.jpg"
+    upload_path = f"upload_{file_name}.jpg"
+    received_path = f"received_{file_name}.jpg"
     
     images = {}
     
@@ -577,3 +577,4 @@ def render_satya_view_page() -> None:
 # Main execution
 if __name__ == "__main__":
     render_satya_view_page()
+
